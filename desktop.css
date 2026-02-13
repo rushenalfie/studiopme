@@ -1,0 +1,60 @@
+body {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	font-family: 'BDO Grotesk';
+	background-color: #fdfdfd;
+	padding: 48px 108px;
+	overflow: auto;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	align-content: flex-start;
+	gap: 360px;
+	row-gap: 72px;
+	padding-right: 1px;
+}
+
+.title-left {
+	flex-grow: 1;
+	color: #000;
+	font-size: 48px;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.95px;
+	text-align: left;
+}
+
+.subtitle {
+	flex-grow: 1;
+	color: rgba(0, 0, 0, 0.95);
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 1.2;
+	letter-spacing: 0px;
+	text-align: left;
+}
+
+.asset {
+	width: 194px; height: 96px;
+	flex-shrink: 0;
+}
+
+
+
+/** breakpoints (margin / paddings) **/
+
+@media screen and (max-width: 1024px) {
+	body {
+		padding-inline: var(--margin-md);
+	}
+}
+
+@media screen and (max-width: 576px) {
+	body {
+		padding-inline: var(--margin-sm);
+	}
+}
