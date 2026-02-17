@@ -1,0 +1,123 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 /* === BASE SETUP === */\
+* \{ margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; \}\
+\
+body \{\
+    height: 100vh;\
+    width: 100vw;\
+    background: #000;\
+    color: #ffffff;\
+    overflow: hidden; \
+    font-family: 'BDO Grotesk', sans-serif;\
+\}\
+\
+/* === BACKGROUND LAYERS === */\
+.video-background \{\
+    position: fixed;\
+    inset: 0;\
+    z-index: -2;\
+    pointer-events: none;\
+    background: #000;\
+\}\
+\
+.video-background iframe \{\
+    width: 100vw;\
+    height: 56.25vw; \
+    min-height: 100vh;\
+    min-width: 177.77vh; \
+    position: absolute;\
+    top: 50%; left: 50%;\
+    transform: translate(-50%, -50%);\
+    filter: blur(5px) brightness(0.4) grayscale(0.2);\
+    scale: 1.05;\
+\}\
+\
+.overlay-grain \{\
+    position: fixed;\
+    inset: 0;\
+    z-index: -1;\
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');\
+    opacity: 0.12;\
+    pointer-events: none;\
+\}\
+\
+/* === NAVIGATION === */\
+.nav-container \{\
+    position: fixed;\
+    inset: 0;\
+    padding: 3vw;\
+    display: flex;\
+    flex-direction: column;\
+    justify-content: space-between;\
+    pointer-events: none;\
+    z-index: 100;\
+\}\
+\
+.nav-row \{ display: flex; justify-content: space-between; pointer-events: auto; \}\
+.nav-row.bottom \{ align-items: flex-end; \}\
+\
+.text-xs \{ font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; \}\
+.description \{ max-width: 550px; font-size: 13px; line-height: 1.4; \}\
+\
+/* === LINKS HOVER === */\
+a \{\
+    color: inherit;\
+    text-decoration: none;\
+    display: inline-block;\
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);\
+\}\
+\
+a:hover \{\
+    opacity: 0.5;\
+    letter-spacing: 0.12em;\
+    text-shadow: 0 0 15px rgba(255,255,255,0.4);\
+\}\
+\
+/* === LOGO SECTION === */\
+.main-stage \{\
+    height: 100vh;\
+    width: 100%;\
+    display: flex;\
+    justify-content: center;\
+    align-items: center;\
+    cursor: crosshair;\
+\}\
+\
+.title \{\
+    display: flex;\
+    font-size: clamp(2.5rem, 12vw, 11rem); \
+    white-space: nowrap;\
+    letter-spacing: -0.05em;\
+    pointer-events: none;\
+    color: #ffffff;\
+\}\
+\
+.letter \{\
+    display: inline-block;\
+    animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;\
+    opacity: 0;\
+    transform: translateY(20px);\
+\}\
+\
+@keyframes reveal \{ to \{ opacity: 1; transform: translateY(0); \} \}\
+\
+/* Stagger Logic */\
+.letter:nth-child(1) \{ animation-delay: 0.1s; \}\
+.letter:nth-child(2) \{ animation-delay: 0.14s; \}\
+.letter:nth-child(3) \{ animation-delay: 0.18s; \}\
+.letter:nth-child(4) \{ animation-delay: 0.22s; \}\
+.letter:nth-child(5) \{ animation-delay: 0.26s; \}\
+.letter:nth-child(6) \{ animation-delay: 0.30s; \}\
+.letter:nth-child(8) \{ animation-delay: 0.38s; \}\
+.letter:nth-child(9) \{ animation-delay: 0.42s; \}\
+.letter:nth-child(10)\{ animation-delay: 0.46s; \}\
+\
+@media (max-width: 768px) \{\
+    .nav-row.bottom \{ flex-direction: column; align-items: flex-start; gap: 20px; \}\
+\}}
