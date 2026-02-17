@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STUDIO PME</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -94,7 +95,6 @@
       color: #ffffff;
     }
 
-    /* Letters stay hidden until video loads — JS adds .animate to trigger */
     .letter {
       display: inline-block;
       opacity: 0;
@@ -171,20 +171,16 @@
     const letters = document.querySelectorAll('.letter');
     const iframe  = document.getElementById('bgVideo');
 
-    // Stagger delay per letter (ms)
     const stagger = [50, 100, 150, 200, 250, 300, 330, 380, 430, 480];
 
     function startAnimation() {
       letters.forEach((el, i) => {
-        const delay        = stagger[i] !== undefined ? stagger[i] : i * 50;
+        const delay         = stagger[i] !== undefined ? stagger[i] : i * 50;
         const morphDuration = 480;
         const tickInterval  = 55;
 
         setTimeout(() => {
-          // Trigger the rise animation
           el.classList.add('animate');
-
-          // Skip font morph for the space
           if (el.textContent.trim() === '') return;
 
           let elapsed = 0;
@@ -196,18 +192,14 @@
               el.style.fontFamily = "'BDO Grotesk', sans-serif";
             }
           }, tickInterval);
-
         }, delay);
       });
     }
 
-    // Fire animation once the video iframe has loaded
-    // Small 300ms buffer so the first video frame is visible
     iframe.addEventListener('load', function() {
       setTimeout(startAnimation, 300);
     });
 
-    // Fallback: start after 3s regardless (slow network / ad blocker)
     var fallbackTimer = setTimeout(startAnimation, 3000);
     iframe.addEventListener('load', function() {
       clearTimeout(fallbackTimer);
