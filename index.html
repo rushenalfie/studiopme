@@ -94,7 +94,7 @@
     a {
       color: inherit;
       text-decoration: none;
-      transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     a:hover {
@@ -117,10 +117,9 @@
       font-size: clamp(2.5rem, 12vw, 11rem);
       white-space: nowrap;
 
-      /* Ultra-refined tracking */
+      /* Swiss-tight tracking */
       letter-spacing: -0.02em;
 
-      /* Restore proper kerning */
       font-kerning: normal;
       text-rendering: optimizeLegibility;
 
@@ -130,11 +129,11 @@
     .letter {
       display: inline-block;
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(14px);
     }
 
     .letter.animate {
-      animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes rise {
@@ -158,8 +157,7 @@
   <!-- Background Video -->
   <div class="video-background">
     <iframe
-      id="bgVideo"
-      src="https://player.vimeo.com/video/1165644401?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1"
+      src="https://player.vimeo.com/video/1165644401?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0"
       frameborder="0"
       allow="autoplay; fullscreen"
     ></iframe>
@@ -211,10 +209,11 @@
 
       setTimeout(() => {
         span.classList.add("animate");
-      }, index * 60);
+      }, index * 45); // tighter Swiss stagger
     });
   </script>
 
 </body>
 </html>
+
 
