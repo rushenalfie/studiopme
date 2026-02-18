@@ -3,47 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STUDIO PME</title>
+  <title>STUDIO PME | Visual Identity & Brand Systems</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <style>
+    :root {
+      --bg-color: #000;
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --transition-soft: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      height: 100vh;
+      height: 100dvh; /* Dynamic viewport for mobile browsers */
       width: 100vw;
-      background: #000;
-      color: #ffffff;
+      background: var(--bg-color);
+      color: var(--text-main);
       overflow: hidden;
-      font-family: 'BDO Grotesk', sans-serif;
+      font-family: 'BDO Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* ---------------- Background ---------------- */
+    /* ---------------- Background & Overlays ---------------- */
 
     .video-background {
       position: fixed;
       inset: 0;
-      z-index: -3;
+      z-index: -2;
       pointer-events: none;
       background: #000;
+    }
+
+    /* Subtle grain/noise overlay for a filmic texture */
+    .video-background::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3External%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      z-index: -1;
     }
 
     .video-background iframe {
       width: 100vw;
       height: 56.25vw;
-      min-height: 100vh;
+      min-height: 100dvh;
       min-width: 177.77vh;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      filter: brightness(0.55) grayscale(0.15);
+      filter: brightness(0.5) grayscale(0.2);
     }
 
     /* ---------------- Navigation ---------------- */
@@ -51,7 +67,7 @@
     .nav-container {
       position: fixed;
       inset: 0;
-      padding: 3vw;
+      padding: clamp(20px, 4vw, 60px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -63,76 +79,116 @@
       display: flex;
       justify-content: space-between;
       pointer-events: auto;
+      opacity: 0;
+      animation: fadeInUp 1s var(--transition-soft) forwards;
     }
 
-    .nav-row.bottom {
-      align-items: flex-end;
-    }
+    .nav-row.top { animation-delay: 0.2s; }
+    .nav-row.bottom { animation-delay: 0.4s; align-items: flex-end; }
 
     .text-xs {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      line-height: 1.6;
     }
 
     .description {
-      max-width: 480px;
-      font-size: 13px;
-      line-height: 1.5;
-      letter-spacing: 0.01em;
+      max-width: 360px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     a {
       color: inherit;
       text-decoration: none;
-      transition: opacity 0.4s ease;
+      position: relative;
+      transition: color 0.3s ease;
     }
 
-    a:hover {
-      opacity: 0.6;
+    /* Animated underline on hover */
+    a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s var(--transition-soft);
+    }
+
+    a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
 
     /* ---------------- Main Stage ---------------- */
 
     .main-stage {
-      height: 100vh;
+      height: 100dvh;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 0 40px;
     }
 
     .logo {
-      width: clamp(400px, 50vw, 1100px); /* bigger logo for stronger presence */
+      width: 100%;
+      max-width: 900px;
       height: auto;
       opacity: 0;
-      transform: translateY(-0.5%); /* slight visual center tweak */
-      animation: fadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transform: scale(0.98);
+      animation: logoEntrance 1.2s var(--transition-soft) 0.1s forwards;
     }
 
-    @keyframes fadeIn {
+    /* ---------------- Animations ---------------- */
+
+    @keyframes logoEntrance {
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1);
       }
     }
 
-    @media (max-width: 768px) {
-      .main-stage {
-        padding: 0 10vw;
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(15px); 
       }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
 
+    /* ---------------- Mobile ---------------- */
+
+    @media (max-width: 768px) {
       .nav-row.bottom {
         flex-direction: column;
         align-items: flex-start;
-        gap: 20px;
+        gap: 24px;
+      }
+      
+      .description {
+        font-size: 13px;
+        max-width: 100%;
+      }
+
+      .logo {
+        max-width: 85vw;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Video -->
   <div class="video-background">
     <iframe
       src="https://player.vimeo.com/video/1165644401?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0"
@@ -141,7 +197,6 @@
     ></iframe>
   </div>
 
-  <!-- Navigation -->
   <nav class="nav-container">
     <div class="nav-row top">
       <div class="text-xs">
@@ -164,7 +219,6 @@
     </div>
   </nav>
 
-  <!-- Main Stage with Centered SVG Logo -->
   <main class="main-stage">
     <img src="Background.svg" alt="Studio PME" class="logo">
   </main>
