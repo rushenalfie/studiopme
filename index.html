@@ -7,7 +7,13 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
     body {
       height: 100vh;
@@ -17,6 +23,8 @@
       overflow: hidden;
       font-family: 'BDO Grotesk', sans-serif;
     }
+
+    /* ---------------- Background ---------------- */
 
     .video-background {
       position: fixed;
@@ -43,9 +51,11 @@
       inset: 0;
       z-index: -1;
       background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-      opacity: 0.12;
+      opacity: 0.10;
       pointer-events: none;
     }
+
+    /* ---------------- Navigation ---------------- */
 
     .nav-container {
       position: fixed;
@@ -58,24 +68,41 @@
       z-index: 100;
     }
 
-    .nav-row { display: flex; justify-content: space-between; pointer-events: auto; }
-    .nav-row.bottom { align-items: flex-end; }
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      pointer-events: auto;
+    }
 
-    .text-xs { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .description { max-width: 550px; font-size: 13px; line-height: 1.4; }
+    .nav-row.bottom {
+      align-items: flex-end;
+    }
+
+    .text-xs {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .description {
+      max-width: 550px;
+      font-size: 13px;
+      line-height: 1.45;
+      letter-spacing: 0.01em;
+    }
 
     a {
       color: inherit;
       text-decoration: none;
-      display: inline-block;
       transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     a:hover {
-      opacity: 0.5;
+      opacity: 0.6;
       letter-spacing: 0.12em;
-      text-shadow: 0 0 15px rgba(255,255,255,0.4);
     }
+
+    /* ---------------- Main Stage ---------------- */
 
     .main-stage {
       height: 100vh;
@@ -87,19 +114,23 @@
     }
 
     .title {
-      display: flex;
       font-size: clamp(2.5rem, 12vw, 11rem);
       white-space: nowrap;
-      letter-spacing: -0.05em;
-      pointer-events: none;
-      color: #ffffff;
+
+      /* Ultra-refined tracking */
+      letter-spacing: -0.02em;
+
+      /* Restore proper kerning */
+      font-kerning: normal;
+      text-rendering: optimizeLegibility;
+
+      display: inline-block;
     }
 
     .letter {
       display: inline-block;
       opacity: 0;
-      transform: translateY(22px);
-      transition: none;
+      transform: translateY(18px);
     }
 
     .letter.animate {
@@ -107,16 +138,24 @@
     }
 
     @keyframes rise {
-      to { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 768px) {
-      .nav-row.bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .nav-row.bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Background Video -->
   <div class="video-background">
     <iframe
       id="bgVideo"
@@ -125,8 +164,10 @@
       allow="autoplay; fullscreen"
     ></iframe>
   </div>
+
   <div class="overlay-grain"></div>
 
+  <!-- Navigation -->
   <nav class="nav-container">
     <div class="nav-row top">
       <div class="text-xs">
@@ -140,71 +181,40 @@
 
     <div class="nav-row bottom">
       <div class="description">
-        STUDIO PME is an independent design studio specialising in visual identity &amp; brand systems. Creating work built on clarity of vision and long-term thinking.
+        STUDIO PME is an independent design studio specialising in visual identity & brand systems.
+        Creating work built on clarity of vision and long-term thinking.
       </div>
-      <div class="text-xs socials">
+      <div class="text-xs">
         <a href="https://www.linkedin.com/in/alfie-rushen/" target="_blank">LINKEDIN</a>
       </div>
     </div>
   </nav>
 
-  <main class="main-stage" id="stage">
+  <!-- Main Title -->
+  <main class="main-stage">
     <div class="title" id="mainTitle">
-      <span class="letter">S</span><span class="letter">T</span><span class="letter">U</span><span class="letter">D</span><span class="letter">I</span><span class="letter">O</span>
-      <span class="letter">&nbsp;</span>
-      <span class="letter">P</span><span class="letter">M</span><span class="letter">E</span>
+      STUDIO&nbsp;PME
     </div>
   </main>
 
+  <!-- Animation Script -->
   <script>
-    const flashFonts = [
-      'Georgia, serif',
-      '"Palatino Linotype", serif',
-      '"Times New Roman", serif',
-      'Garamond, serif',
-      'Baskerville, serif',
-      '"Book Antiqua", serif',
-      'Copperplate, fantasy',
-      '"Courier New", monospace',
-    ];
+    const title = document.getElementById("mainTitle");
+    const text = title.textContent;
+    title.textContent = "";
 
-    const letters = document.querySelectorAll('.letter');
-    const iframe  = document.getElementById('bgVideo');
+    [...text].forEach((char, index) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.classList.add("letter");
+      title.appendChild(span);
 
-    const stagger = [50, 100, 150, 200, 250, 300, 330, 380, 430, 480];
-
-    function startAnimation() {
-      letters.forEach((el, i) => {
-        const delay         = stagger[i] !== undefined ? stagger[i] : i * 50;
-        const morphDuration = 480;
-        const tickInterval  = 55;
-
-        setTimeout(() => {
-          el.classList.add('animate');
-          if (el.textContent.trim() === '') return;
-
-          let elapsed = 0;
-          const ticker = setInterval(() => {
-            el.style.fontFamily = flashFonts[Math.floor(Math.random() * flashFonts.length)];
-            elapsed += tickInterval;
-            if (elapsed >= morphDuration) {
-              clearInterval(ticker);
-              el.style.fontFamily = "'BDO Grotesk', sans-serif";
-            }
-          }, tickInterval);
-        }, delay);
-      });
-    }
-
-    iframe.addEventListener('load', function() {
-      setTimeout(startAnimation, 300);
-    });
-
-    var fallbackTimer = setTimeout(startAnimation, 3000);
-    iframe.addEventListener('load', function() {
-      clearTimeout(fallbackTimer);
+      setTimeout(() => {
+        span.classList.add("animate");
+      }, index * 60);
     });
   </script>
 
 </body>
 </html>
+
